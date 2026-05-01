@@ -6,7 +6,6 @@
 
 .slidezy-track {
     display: flex;
-    transition: transform ease .3s;
 }
 
 .slidezy-slide {
