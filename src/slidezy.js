@@ -5,9 +5,15 @@ function Slidezy(selector, options = {}) {
         return;
     }
 
-    this.opt = Object.assign({}, options);
+    this.opt = Object.assign(
+        {
+            items: 1,
+            loop: false,
+        },
+        options,
+    );
     this.slides = Array.from(this.container.children);
-this.currentIndex = 0
+    this.currentIndex = 0;
 
     this._init();
 }
@@ -24,7 +30,8 @@ Slidezy.prototype._createTrack = function () {
     this.track.className = "slidezy-track";
 
     this.slides.forEach((slide) => {
-        slide.classList.add('slidezy-slide')
+        slide.classList.add("slidezy-slide");
+        slide.style.flexBasis = `calc(100% / ${this.opt.items})`;
         this.track.appendChild(slide);
     });
 
@@ -43,14 +50,22 @@ Slidezy.prototype._createNavigation = function () {
 
     this.container.append(this.prevBtn, this.nextBtn);
 
-    this.prevBtn.onclick = () => this.moveSlide(-1)
-    this.nextBtn.onclick = () => this.moveSlide(1)
-
+    this.prevBtn.onclick = () => this.moveSlide(-1);
+    this.nextBtn.onclick = () => this.moveSlide(1);
 };
 
 Slidezy.prototype.moveSlide = function (step) {
-    this.currentIndex = Math.min(Math.max(this.currentIndex + step, 0), this.slides.length - 3)
+    if (this.opt.loop) {
+        this.currentIndex =
+            (this.currentIndex + step + this.slides.length) %
+            this.slides.length; // console.log(this.currentIndex): (6|0 + 6) % 6 = 0 (return)
+    } else {
+        this.currentIndex = Math.min(
+            Math.max(this.currentIndex + step, 0),
+            this.slides.length - this.opt.items,
+        );
+    }
 
-    this.offset = -(this.currentIndex * (100 / 3))
-    this.track.style.transform = `translateX(${this.offset}%)`    
-}
+    this.offset = -(this.currentIndex * (100 / this.opt.items));
+    this.track.style.transform = `translateX(${this.offset}%)`;
+};
