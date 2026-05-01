@@ -24,9 +24,21 @@
             .slidezy-slide:nth-child(2) {
                 background-color: orange;
             }
-            
+
             .slidezy-slide:nth-child(3) {
                 background-color: greenyellow;
+            }
+
+            .slidezy-slide:nth-child(4) {
+                background-color: yellow;
+            }
+
+            .slidezy-slide:nth-child(5) {
+                background-color: olive;
+            }
+
+            .slidezy-slide:nth-child(6) {
+                background-color: burlywood;
             }
         </style>
     </head>
@@ -41,7 +53,10 @@
         </div>
         <script src="./src/slidezy.js"></script>
         <script>
-            const mySlider = new Slidezy("#my-slider");
+            const mySlider = new Slidezy("#my-slider", {
+                // items: 1,
+                // loop: true,
+            });
         </script>
     </body>
 </html>
