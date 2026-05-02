@@ -71,8 +71,12 @@ Slidezy.prototype._createTrack = function () {
 };
 
 Slidezy.prototype._createControls = function () {
-    this.prevBtn = this.opt.prevButton ? document.querySelector(this.opt.prevButton) : document.createElement("button");
-    this.nextBtn = this.opt.nextButton ? document.querySelector(this.opt.nextButton) : document.createElement("button");
+    this.prevBtn = this.opt.prevButton
+        ? document.querySelector(this.opt.prevButton)
+        : document.createElement("button");
+    this.nextBtn = this.opt.nextButton
+        ? document.querySelector(this.opt.nextButton)
+        : document.createElement("button");
 
     if (!this.opt.prevButton) {
         this.prevBtn.textContent = this.opt.controlsText[0];
@@ -86,19 +90,23 @@ Slidezy.prototype._createControls = function () {
         this.content.appendChild(this.nextBtn);
     }
 
-    const stepSize = this.opt.slideBy === 'page' ? this.opt.items : this.opt.slideBy
+    const stepSize =
+        this.opt.slideBy === "page" ? this.opt.items : this.opt.slideBy;
 
     this.prevBtn.onclick = () => this.moveSlide(-stepSize);
     this.nextBtn.onclick = () => this.moveSlide(stepSize);
+};
+
+// số slide gốc
+Slidezy.prototype._getSlideCount = function () {
+    return this.slides.length - (this.opt.loop ? this.opt.items * 2 : 0);
 };
 
 Slidezy.prototype._createNav = function () {
     this.navWrapper = document.createElement("div");
     this.navWrapper.className = "slidezy-nav";
 
-    const slideCount =
-        this.slides.length - (this.opt.loop ? this.opt.items * 2 : 0);
-
+    const slideCount = this._getSlideCount();
     const pageCount = Math.ceil(slideCount / this.opt.items);
 
     for (let i = 0; i < pageCount; i++) {
@@ -134,11 +142,13 @@ Slidezy.prototype.moveSlide = function (step) {
     // Thay transitionend vì khi k loop, đến slide cuối/đầu sẽ k có transition -> disable nút
     setTimeout(() => {
         if (this.opt.loop) {
-            if (this.currentIndex <= 0) {
-                this.currentIndex = maxIndex - this.opt.items;
+            const slideCount = this._getSlideCount();
+            // vào slide clone -> nhảy
+            if (this.currentIndex < this.opt.items) {
+                this.currentIndex += slideCount; // 2 + 6 -> nhảy về slide gốc
                 this._updatePosition(true);
-            } else if (this.currentIndex >= maxIndex) {
-                this.currentIndex = this.opt.items;
+            } else if (this.currentIndex > slideCount) {
+                this.currentIndex -= slideCount;
                 this._updatePosition(true);
             }
         }
@@ -147,6 +157,8 @@ Slidezy.prototype.moveSlide = function (step) {
 
     this._updatePosition();
 };
+// 4 5 6 (clone) [1 2 3 4 5 6]  1 2 3 (clone)
+// 0 1 2          3 4 5 6 7 8   9 10 11
 
 Slidezy.prototype._updateNav = function () {
     let realIndex = this.currentIndex;
