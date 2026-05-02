@@ -16,11 +16,17 @@ function Slidezy(selector, options = {}) {
             prevButton: null,
             nextButton: null,
             slideBy: 1, // "page"
+            autoplay: false,
+            autoplayTimeout: 3000,
+            autoplayHoverPause: true,
         },
         options,
     );
+
+    // số slide ban đầu
     this.originalSlides = Array.from(this.container.children);
-    this.slides = this.originalSlides.slice(0)
+    // có thể bị mở rộng bằng clone
+    this.slides = this.originalSlides.slice(0);
     this.currentIndex = this.opt.loop ? this._getCloneCount() : 0;
 
     this._init();
@@ -33,7 +39,7 @@ Slidezy.prototype._init = function () {
     this._createContent();
     this._createTrack();
 
-    const showNav = this._getSlideCount() > this.opt.items
+    const showNav = this._getSlideCount() > this.opt.items;
 
     if (this.opt.controls && showNav) {
         this._createControls();
@@ -42,6 +48,31 @@ Slidezy.prototype._init = function () {
     if (this.opt.nav && showNav) {
         this._createNav();
     }
+
+    if (this.opt.autoplay) {
+        this._startAutoplay();
+
+        if (this.opt.autoplayHoverPause) {
+            this.container.onmouseenter = () => this._stopAutoplay()
+            this.container.onmouseleave = () => this._startAutoplay()
+        }
+    }
+};
+
+Slidezy.prototype._startAutoplay = function () {
+    if (this.autoplayTimer) return;
+
+    const slideBy = this._getSlideBy();
+
+    // timeout - 3s chạy 1 lần
+    this.autoplayTimer = setInterval(() => {
+        this.moveSlide(slideBy);
+    }, this.opt.autoplayTimeout);
+};
+
+Slidezy.prototype._stopAutoplay = function () {
+    clearInterval(this.autoplayTimer);
+    this.autoplayTimer = null;
 };
 
 Slidezy.prototype._createContent = function () {
@@ -50,23 +81,26 @@ Slidezy.prototype._createContent = function () {
     this.container.appendChild(this.content);
 };
 
+// Tính số clone cần thiết
 Slidezy.prototype._getCloneCount = function () {
-    const slideCount = this._getSlideCount()
+    const slideCount = this._getSlideCount();
 
-    if(slideCount <= this.opt.items) return 0
+    if (slideCount <= this.opt.items) return 0;
 
-    const slideBy = this._getSlideBy()
-    const cloneCount = slideBy + this.opt.items
+    const slideBy = this._getSlideBy();
+    const cloneCount = slideBy + this.opt.items;
 
-    return cloneCount > slideCount ? slideCount : cloneCount
-}
+    // Nếu số clone cần lớn hơn tổng slide, ta chỉ clone tối đa bằng số slide gốc để tránh clone dư thừa.
+    return cloneCount > slideCount ? slideCount : cloneCount;
+};
 
 Slidezy.prototype._createTrack = function () {
     this.track = document.createElement("div");
     this.track.className = "slidezy-track";
 
-    const cloneCount = this._getCloneCount()
+    const cloneCount = this._getCloneCount();
 
+    // Đảm bảo vùng clone đủ dài cho các bước nhảy slideBy lớn.
     if (this.opt.loop && cloneCount > 0) {
         const cloneHead = this.slides
             .slice(-cloneCount)
@@ -88,8 +122,8 @@ Slidezy.prototype._createTrack = function () {
 };
 
 Slidezy.prototype._getSlideBy = function () {
-    return this.opt.slideBy === "page" ? this.opt.items : this.opt.slideBy
-}
+    return this.opt.slideBy === "page" ? this.opt.items : this.opt.slideBy;
+};
 
 Slidezy.prototype._createControls = function () {
     this.prevBtn = this.opt.prevButton
@@ -111,15 +145,15 @@ Slidezy.prototype._createControls = function () {
         this.content.appendChild(this.nextBtn);
     }
 
-    const slideBy = this._getSlideBy()
+    const slideBy = this._getSlideBy();
 
     this.prevBtn.onclick = () => this.moveSlide(-slideBy);
     this.nextBtn.onclick = () => this.moveSlide(slideBy);
 };
 
-// số slide gốc
+// số slide gốc vì this.slides đã có clone, phép tính cũ trở nên sai.
 Slidezy.prototype._getSlideCount = function () {
-    return this.originalSlides.length
+    return this.originalSlides.length;
 };
 
 Slidezy.prototype._createNav = function () {
@@ -177,17 +211,16 @@ Slidezy.prototype.moveSlide = function (step) {
 
     this._updatePosition();
 };
-// 4 5 6 (clone) [1 2 3 4 5 6]  1 2 3 (clone)
-// 0 1 2          3 4 5 6 7 8   9 10 11
 
 Slidezy.prototype._updateNav = function () {
-    if (!this.navWrapper) return
+    if (!this.navWrapper) return;
 
     let realIndex = this.currentIndex;
     if (this.opt.loop) {
-        const slideCount = this._getSlideCount()
+        const slideCount = this._getSlideCount();
         realIndex =
-            (this.currentIndex - this._getCloneCount() + slideCount) % slideCount; // fix khi slide cuối: (9 - 3 + 6) / 6 = 0 -> pI = 0/3=0 chứ k phải (9-3)=6 -> pI: 6/3=2
+            (this.currentIndex - this._getCloneCount() + slideCount) %
+            slideCount; // fix khi slide cuối: (9 - 3 + 6) / 6 = 0 -> pI = 0/3=0 chứ k phải (9-3)=6 -> pI: 6/3=2
     }
     const pageIndex = Math.floor(realIndex / this.opt.items);
     const dots = Array.from(this.navWrapper.children);
