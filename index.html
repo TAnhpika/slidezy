@@ -2,64 +2,279 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
+        <title>Slidezy.js: A Lightweight Vanilla JavaScript Slider Library</title>
+        <meta
+            name="description"
+            content="Slidezy.js is a lightweight and simple slider/carousel library written in pure JavaScript. It is designed for great user experience (no dependencies, fully customizable)."
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Slidezy</title>
+        <link
+            rel="stylesheet"
+            href="./assets/highlight/styles.css"
+            media="all"
+        />
+        <link rel="stylesheet" href="./assets/styles.css" media="all" />
         <link rel="stylesheet" href="./src/slidezy.css" />
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
 
-            .slidezy-slide {
-                padding: 30px;
-                text-align: center;
-            }
 
-            .slide-1 {
-                background-color: violet;
-            }
-
-            .slide-2 {
-                background-color: orange;
-            }
-
-            .slide-3 {
-                background-color: greenyellow;
-            }
-
-            .slide-4 {
-                background-color: yellow;
-            }
-
-            .slide-5 {
-                background-color: olive;
-            }
-
-            .slide-6 {
-                background-color: burlywood;
-            }
-        </style>
     </head>
     <body>
-        <div id="my-slider">
-            <div class="slide-1">Slide 1</div>
-            <div class="slide-2">Slide 2</div>
-            <div class="slide-3">Slide 3</div>
-            <div class="slide-4">Slide 4</div>
-            <div class="slide-5">Slide 5</div>
-            <div class="slide-6">Slide 6</div>
+        <!-- HEADER -->
+        <header class="header">
+            <div class="container">
+                <h1 class="header__title">Slidezy.js</h1>
+                <div class="header__tagline">
+                    A lightweight and simple slider/carousel library built with pure JavaScript.
+                </div>
+                <a
+                    href="https://github.com/TAnhpika/slidezy"
+                    class="header__github"
+                    target="_blank"
+                    ><img src="./assets/github.svg" alt="View on GitHub"
+                /></a>
+            </div>
+        </header>
+        <!-- /HEADER -->
+
+        <!-- CONTAINER -->
+        <div class="container content">
+            <h2 data-bullet="1" class="title" id="try-it-out">Try It Out</h2>
+            <p>
+                Slidezy is a lightweight <strong>slider library</strong> built with
+                pure JavaScript. (<a
+                    href="https://github.com/TAnhpika/slidezy" target="_blank"
+                    >Source code available on GitHub</a
+                >)
+            </p>
+
+            <ul>
+                <li>No dependencies</li>
+                <li>Fully customizable with CSS</li>
+                <li>Supports Loop, Autoplay, Custom UI</li>
+                <li>Simple and intuitive API</li>
+                <li>Lightweight and optimized</li>
+            </ul>
+
+            <p>Here are some examples of how to use Slidezy:</p>
+
+            <!-- Sample 1 -->
+            <p><strong>1. Basic Slider (Default)</strong></p>
+            <p>
+                A simple out-of-the-box slider showing 1 item at a time with default navigation controls and pagination dots.
+            </p>
+
+            <div class="sample-1">
+                <div class="slider-1">
+                    <div class="slidezy-slide slide-1">Slide 1</div>
+                    <div class="slidezy-slide slide-2">Slide 2</div>
+                    <div class="slidezy-slide slide-3">Slide 3</div>
+                    <div class="slidezy-slide slide-4">Slide 4</div>
+                    <div class="slidezy-slide slide-5">Slide 5</div>
+                    <div class="slidezy-slide slide-6">Slide 6</div>
+                </div>
+            </div>
+
+            <!-- Sample 2 -->
+            <p><strong>2. Carousel (Multiple Items, Loop & Slide By Page)</strong></p>
+            <p>
+                Displays 3 items simultaneously. Clicking 'Next' moves past an entire page of items at once, with infinite looping enabled.
+            </p>
+
+            <div class="sample-2">
+                <div class="slider-2">
+                    <div class="slidezy-slide slide-1">Slide 1</div>
+                    <div class="slidezy-slide slide-2">Slide 2</div>
+                    <div class="slidezy-slide slide-3">Slide 3</div>
+                    <div class="slidezy-slide slide-4">Slide 4</div>
+                    <div class="slidezy-slide slide-5">Slide 5</div>
+                    <div class="slidezy-slide slide-6">Slide 6</div>
+                </div>
+            </div>
+
+            <!-- Sample 3 -->
+            <p><strong>3. Autoplay & Custom UI</strong></p>
+            <p>
+                Features automatic sliding that pauses on hover, and custom external navigation buttons configured via CSS selectors.
+            </p>
+
+            <div class="sample-3">
+                <div class="slider-3">
+                    <div class="slidezy-slide slide-1">Slide 1</div>
+                    <div class="slidezy-slide slide-2">Slide 2</div>
+                    <div class="slidezy-slide slide-3">Slide 3</div>
+                    <div class="slidezy-slide slide-4">Slide 4</div>
+                    <div class="slidezy-slide slide-5">Slide 5</div>
+                    <div class="slidezy-slide slide-6">Slide 6</div>
+                </div>
+                <div style="text-align:center; margin-top: 15px;">
+                    <button id="my-custom-prev" style="padding:8px 16px; cursor:pointer; border: 1px solid #ddd; background: #fff; border-radius: 4px;">Prev</button>
+                    <button id="my-custom-next" style="padding:8px 16px; cursor:pointer; border: 1px solid #ddd; background: #fff; border-radius: 4px;">Next</button>
+                </div>
+            </div>
+
+
+
+            <h2 data-bullet="2" class="title" id="installation">
+                Installation
+            </h2>
+            <table class="methods">
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th class="w60">Steps</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>Direct Download</td>
+                    <td>
+                        <a
+                            href="https://github.com/TAnhpika/slidezy/archive/refs/heads/main.zip"
+                            title="Download Slidezy"
+                        >
+                            Download ZIP
+                        </a>
+                        <p>
+                            Simply extract the ZIP file and use the
+                            <code>slidezy.min.js</code> and
+                            <code>slidezy.min.css</code> files in your project.
+                        </p>
+                    </td>
+                </tr>
+            </table>
+            <p>
+                Slidezy provides a small CSS file that you can include directly
+                via a CDN link. This makes it easy to integrate into your
+                project and customize as needed.
+            </p>
+
+            <p>Include the Slidezy JavaScript file in your project:</p>
+
+            <pre
+                class="html"
+            ><code>&lt;script src=&quot;https://cdn.jsdelivr.net/gh/TAnhpika/slidezy@v1.0.0/slidezy.min.js&quot;&gt;&lt;/script&gt;</code></pre>
+
+            <h2 data-bullet="3" class="title" id="usage">Usage</h2>
+            <p>Here’s the basic HTML structure you’ll need to set up Slidezy:</p>
+
+            <pre class="html"><code>&lt;div class=&quot;my-slider&quot;&gt;
+    &lt;div&gt;Slide 1&lt;/div&gt;
+    &lt;div&gt;Slide 2&lt;/div&gt;
+    &lt;div&gt;Slide 3&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+            <p>And here’s how you can use it with JavaScript:</p>
+
+            <pre class="javascript"><code>// Initialize a new slider instance
+const slider = new Slidezy('.my-slider', {
+    items: 1,
+    loop: true,
+    autoplay: true,
+    speed: 500
+});
+</code></pre>
+
+            <h2 data-bullet="4" class="title" id="options">Options</h2>
+            <table class="methods">
+                <thead>
+                    <tr>
+                        <th>Option</th>
+                        <th>Type</th>
+                        <th class="w60">Description</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>items</td>
+                    <td>number</td>
+                    <td>
+                        Number of items to show at once (default: <code>1</code>)
+                    </td>
+                </tr>
+                <tr>
+                    <td>loop</td>
+                    <td>boolean</td>
+                    <td>
+                        Enable continuous loop mode (default: <code>false</code>)
+                    </td>
+                </tr>
+                <tr>
+                    <td>speed</td>
+                    <td>number</td>
+                    <td>
+                        Transition speed in milliseconds (default: <code>300</code>)
+                    </td>
+                </tr>
+                <tr>
+                    <td>autoplay</td>
+                    <td>boolean</td>
+                    <td>
+                        Enable auto play of slides (default: <code>false</code>)
+                    </td>
+                </tr>
+                <tr>
+                    <td>autoplayTimeout</td>
+                    <td>number</td>
+                    <td>
+                        Autoplay interval in milliseconds (default: <code>3000</code>)
+                    </td>
+                </tr>
+                <tr>
+                    <td>slideBy</td>
+                    <td>number | 'page'</td>
+                    <td>
+                        Number of items to slide by. 'page' slides by the number of visible items (default: <code>1</code>)
+                    </td>
+                </tr>
+                <tr>
+                    <td>prevButton / nextButton</td>
+                    <td>string</td>
+                    <td>
+                        CSS selector for custom previous/next buttons.
+                    </td>
+                </tr>
+            </table>
+
+            <footer class="footer">
+                <p>
+                    This is a small project created to demonstrate slider
+                    functionality in vanilla JavaScript.
+                </p>
+                <p>
+                    Learn more at
+                    <a
+                        href="https://fullstack.edu.vn/landing/javascript"
+                        target="_blank"
+                    >
+                        JavaScript Tutorials</a
+                    >.
+                </p>
+            </footer>
         </div>
-        <!-- <div class="my-controls">
-            <button class="slide-prev">Prev</button>
-            <button class="slide-next">Next</button>
-        </div> -->
+        <!-- /CONTAINER -->
+
+        <script src="./assets/highlight/highlight.js"></script>
         <script src="./src/slidezy.js"></script>
         <script>
-            const mySlider = new Slidezy("#my-slider", {
-                items: 1,
+            // Highlight code
+            hljs.initHighlightingOnLoad();
+
+            // Demo 1: Basic
+            new Slidezy('.slider-1');
+
+            // Demo 2: Carousel
+            new Slidezy('.slider-2', {
+                items: 3,
+                slideBy: 'page',
                 loop: true,
+                speed: 500
+            });
+
+            // Demo 3: Autoplay & Custom UI
+            new Slidezy('.slider-3', {
+                autoplay: true,
+                autoplayTimeout: 2000,
+                prevButton: '#my-custom-prev',
+                nextButton: '#my-custom-next',
+                loop: true
             });
         </script>
     </body>

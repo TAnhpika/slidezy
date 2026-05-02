@@ -5,6 +5,9 @@ function Slidezy(selector, options = {}) {
         return;
     }
 
+    // Store original HTML for destroy
+    this._originHTML = this.container.innerHTML;
+
     this.opt = Object.assign(
         {
             items: 1,
@@ -53,8 +56,8 @@ Slidezy.prototype._init = function () {
         this._startAutoplay();
 
         if (this.opt.autoplayHoverPause) {
-            this.container.onmouseenter = () => this._stopAutoplay()
-            this.container.onmouseleave = () => this._startAutoplay()
+            this.container.onmouseenter = () => this._stopAutoplay();
+            this.container.onmouseleave = () => this._startAutoplay();
         }
     }
 };
@@ -241,4 +244,23 @@ Slidezy.prototype._updatePosition = function (instant = false) {
         // khi tắt animating thì k update
         this._updateNav();
     }
+};
+
+Slidezy.prototype.destroy = function () {
+    // Stop autoplay if running
+    if (this.autoplayTimer) {
+        this._stopAutoplay();
+    }
+
+    // Restore original HTML
+    this.container.innerHTML = this._originHTML;
+
+    // Clean up references
+    this.container = null;
+    this.content = null;
+    this.track = null;
+    this.slides = null;
+    this.prevBtn = null;
+    this.nextBtn = null;
+    this.navWrapper = null;
 };
